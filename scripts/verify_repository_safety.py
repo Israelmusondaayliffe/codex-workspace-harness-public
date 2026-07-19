@@ -133,6 +133,18 @@ def main() -> int:
     except (OSError, ValueError, KeyError, IndexError, TypeError) as exc:
         problems.append(f"marketplace manifest is invalid: {exc}")
 
+    required_files = {
+        PurePosixPath("AGENTS.md"),
+        PurePosixPath("README.md"),
+        PurePosixPath(".agents/plugins/marketplace.json"),
+        PurePosixPath("plugins/harness-engineering/.codex-plugin/plugin.json"),
+        PurePosixPath("integrations/claude-code-codex-bridge/template/.claude/settings.json"),
+        PurePosixPath("integrations/claude-code-codex-bridge/template/.claude/hooks/session-start.sh"),
+    }
+    tracked = {PurePosixPath(path.relative_to(ROOT).as_posix()) for path in files}
+    for missing in sorted(required_files - tracked):
+        problems.append(f"required file is not tracked: {missing}")
+
     if problems:
         for problem in sorted(set(problems)):
             print(f"FAIL: {problem}", file=sys.stderr)

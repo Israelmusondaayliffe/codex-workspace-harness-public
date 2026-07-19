@@ -7,6 +7,8 @@
 !.env.example
 .codex/
 .claude/
+!integrations/claude-code-codex-bridge/template/.claude/
+!integrations/claude-code-codex-bridge/template/.claude/**
 .impeccable/
 __pycache__/
 .pytest_cache/
