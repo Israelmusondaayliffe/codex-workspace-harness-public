@@ -4,6 +4,27 @@ This repository is a depersonalized, clone-ready reference harness for Codex. It
 
 The included Harness Engineering plugin can interview you, audit an existing setup, propose a reviewable plan, apply approved changes with backups, and verify the result from fresh evidence.
 
+## Install Harness Engineering
+
+Copy this block into Codex:
+
+```text
+Install the Harness Engineering plugin from the public repository.
+
+Run:
+codex plugin marketplace add Israelmusondaayliffe/codex-workspace-harness-public --ref main
+codex plugin add harness-engineering@codex-workspace-harness
+
+Then confirm that Harness Engineering is enabled and that all 12 namespaced skills are visible. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
+```
+
+Or run the installation commands directly:
+
+```bash
+codex plugin marketplace add Israelmusondaayliffe/codex-workspace-harness-public --ref main
+codex plugin add harness-engineering@codex-workspace-harness
+```
+
 ## What is included
 
 - A layered `AGENTS.md` example for global, workspace, and project scopes.
@@ -15,7 +36,7 @@ The included Harness Engineering plugin can interview you, audit an existing set
 - A local plugin marketplace manifest for installation from this clone.
 - A repository safety validator and an optional, disabled Claude Code bridge template.
 
-## Start here
+## Clone the reference harness
 
 Requirements: Git, Codex, and Python 3.9 or newer.
 

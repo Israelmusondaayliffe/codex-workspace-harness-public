@@ -2,7 +2,14 @@
 
 ## 1. Install the bundled plugin
 
-From the repository root:
+Install directly from the public GitHub repository:
+
+```bash
+codex plugin marketplace add Israelmusondaayliffe/codex-workspace-harness-public --ref main
+codex plugin add harness-engineering@codex-workspace-harness
+```
+
+If you are working from a local clone or fork, add that repository root instead:
 
 ```bash
 codex plugin marketplace add .
