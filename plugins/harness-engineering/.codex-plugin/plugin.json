@@ -1,0 +1,24 @@
+{
+  "name": "harness-engineering",
+  "version": "1.0.0",
+  "description": "Design, build, verify, and maintain a personalized Codex harness through a source-first interview and reversible guided workflow.",
+  "author": {
+    "name": "Harness Engineering Contributors"
+  },
+  "license": "MIT",
+  "keywords": ["codex", "harness", "agents", "skills", "plugins", "verification"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Harness Engineering",
+    "shortDescription": "Build a personal Codex operating harness.",
+    "longDescription": "Interview the user, inspect the current Codex environment, plan a right-sized harness, apply approved changes with backups, and verify the result with fresh evidence.",
+    "developerName": "Harness Engineering Contributors",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Design and build my Codex harness.",
+      "Audit my current Codex setup.",
+      "Verify that my harness really works."
+    ]
+  }
+}

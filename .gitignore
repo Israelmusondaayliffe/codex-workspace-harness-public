@@ -1,0 +1,17 @@
+.DS_Store
+*.swp
+*.tmp
+*.log
+.env
+.env.*
+!.env.example
+.codex/
+.claude/
+.impeccable/
+__pycache__/
+.pytest_cache/
+CODEX-OUTPUTS/*
+!CODEX-OUTPUTS/README.md
+CONTEXT/*.md
+!CONTEXT/README.md
+!CONTEXT/*.template.md
