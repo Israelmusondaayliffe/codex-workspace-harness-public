@@ -17,6 +17,8 @@ Reuse an existing capability when it already owns the task. Create a skill only 
 6. Add deterministic scripts only when exact behavior warrants them.
 7. Generate matching `agents/openai.yaml` metadata.
 8. Run the official quick validator and realistic forward tests.
-9. Add the skill to the harness plan and discovery checks.
+9. Before compacting an existing skill, freeze its source fingerprint, launcher contract, scripts, positive and negative triggers, functional cases, and external rubric. Stop before editing when the current version fails its acceptance gate.
+10. Add the skill to the harness plan and discovery checks.
 
 Do not create a broad everything-skill or load an entire library by default.
+Word ceilings are soft diagnostics. The complete behavior suite decides acceptance. See `../../references/frontier-first-prompt-governance.md`.

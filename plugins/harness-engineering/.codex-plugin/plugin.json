@@ -1,6 +1,6 @@
 {
   "name": "harness-engineering",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "Design, build, verify, and maintain a personalized Codex harness through a source-first interview and reversible guided workflow.",
   "author": {
     "name": "Harness Engineering Contributors"

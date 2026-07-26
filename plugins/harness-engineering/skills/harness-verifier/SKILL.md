@@ -14,8 +14,11 @@ Verify without repairing during the verification pass.
 3. Run every safe deterministic check exactly as approved.
 4. Verify skills and plugins with their official validators.
 5. Prove installed listing, source-cache parity, and fresh-task discovery.
-6. Test connectors, Browser, Computer Use, rules, or hooks only when the plan requires them.
-7. Evaluate each judgment criterion with file, line, command, or live-surface evidence.
-8. Emit a receipt with one result per required check.
+6. For context changes, compare total and section-level prompt size, front doors, hidden specialists, duplicates, deterministic route coverage, and actual explicit invocation.
+7. Re-run the frozen behavior suite after all installation and capability-policy changes. Do not rely on a pre-rollout candidate result.
+8. Test connectors, Browser, Computer Use, rules, or hooks only when the plan requires them.
+9. Evaluate each judgment criterion with file, line, command, or live-surface evidence.
+10. Emit a receipt with one result per required check.
 
 Use `../../references/verification-standard.md`. Missing, skipped, stale, stubbed, or renamed checks fail verification.
+Use `../../references/frontier-first-prompt-governance.md` for prompt-subtraction and skill-pilot acceptance.

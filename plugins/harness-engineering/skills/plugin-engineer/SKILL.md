@@ -18,4 +18,6 @@ Use the system `plugin-creator` skill as the source of truth for scaffolding, ma
 7. Compare source and installed cache.
 8. Prove visibility from a new task or fresh prompt inventory.
 
+For task-start policy, keep the personal plugin front door implicit and hide an owned specialist only after a deterministic front-door case proves reachability. Keep explicit-only plugin skills and exact loose mirrors out of default context. Preserve unrelated metadata, roll out in reversible waves, and run an actual explicit hidden-skill smoke. Follow `../../references/frontier-first-prompt-governance.md`.
+
 Public repository creation and marketplace submission remain separate external actions.

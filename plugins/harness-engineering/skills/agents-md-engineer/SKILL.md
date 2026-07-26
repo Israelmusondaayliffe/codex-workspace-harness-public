@@ -16,4 +16,7 @@ Keep instruction files short, accurate, durable, and scoped to the directories t
 5. Preserve existing load-bearing rules and show a diff for updates.
 6. Verify that closer files refine rather than silently contradict broader guidance.
 
+Use a compact context kernel for stable cross-task policy and delta-only workspace or project overlays. Keep front-door ownership cues only when they are load-bearing for routing. Treat size ceilings as diagnostics and accept subtraction only against a frozen behavior suite.
+
 Use the templates under `../../assets/`. Replace every bracketed placeholder. Do not copy the advanced case study as a default.
+For measured context reduction, follow `../../references/frontier-first-prompt-governance.md`.

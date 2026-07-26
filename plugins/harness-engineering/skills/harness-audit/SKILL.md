@@ -12,10 +12,11 @@ Read current state before proposing changes. Do not record credential values or 
 1. Resolve the Codex home from `CODEX_HOME` or the platform default.
 2. Identify the selected workspace and applicable `AGENTS.md` chain.
 3. Inventory config key names, rules, hooks, skills, plugins, MCP names, templates, projects, memory surfaces, automations, Browser, and Computer Use availability.
-4. Check for conflicts, placeholders, stale paths, duplicated ownership, missing validators, untrusted hooks, unsupported settings, and absent evidence.
-5. Classify findings across information, execution, and feedback layers.
-6. Separate verified facts, inferred risks, and user decisions.
-7. Produce `audit.json` plus a short gap summary. Make no changes.
+4. For context work, capture full prompt input, section sizes, model, effort, tools, implicit skills, duplicate names, front doors, source/cache state, routing results, and applicable file hashes.
+5. Check for conflicts, placeholders, stale paths, duplicated ownership, missing validators, untrusted hooks, unsupported settings, and absent evidence.
+6. Classify findings across information, execution, and feedback layers.
+7. Separate verified facts, inferred risks, and user decisions.
+8. Produce `audit.json` plus a short gap summary. Make no changes.
 
 Run:
 
@@ -24,3 +25,4 @@ python3 ../../scripts/harnessctl.py audit --output AUDIT.json [--codex-home PATH
 ```
 
 Use `../../references/verification-standard.md` to distinguish file presence from operational proof.
+Use `../../references/frontier-first-prompt-governance.md` when the audit may lead to prompt subtraction or capability hiding.
