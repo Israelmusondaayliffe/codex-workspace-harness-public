@@ -20,7 +20,7 @@ Before drafting, identify:
 - Document type: `[decision memo, operating spec, project plan, executive summary, proposal, brief, custom]`
 - Source material: `[files, links, notes, transcript, Notion page, Drive file, email, chat context]`
 - Evidence standard: `[provided context only, local files, connector sources, web citations, assumptions allowed]`
-- Output destination: `CODEX-OUTPUTS/YYYY-MM-DD/[projectname]_doc_v1.md`
+- Output destination: `OUTPUTS/YYYY-MM-DD/[projectname]_doc_v1.md`
 
 If the reader, document job, or source material is missing and cannot be inferred safely, ask one concise question before drafting.
 
@@ -84,7 +84,7 @@ Sections:
 5. Put the recommendation, action, or decision point near the top.
 6. Remove generic context that does not help the reader act.
 7. Add a verification section only when it helps the reader trust the work.
-8. Save the final draft to `CODEX-OUTPUTS/YYYY-MM-DD/`.
+8. Save the final draft to `OUTPUTS/YYYY-MM-DD/`.
 
 ## Output Contract
 
@@ -119,7 +119,7 @@ Before delivery:
 - Next step is clear.
 - No em-dashes.
 - No banned AI cliches.
-- Final path follows `CODEX-OUTPUTS/YYYY-MM-DD/[projectname]_doc_v1.md`.
+- Final path follows `OUTPUTS/YYYY-MM-DD/[projectname]_doc_v1.md`.
 
 ## Reuse Notes
 

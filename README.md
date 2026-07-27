@@ -1,28 +1,39 @@
-# Codex Workspace Harness
+# Harness Engineering Public
 
-This repository is a depersonalized, clone-ready reference harness for Codex. It shows how to organize instructions, user context, projects, templates, outputs, reusable capabilities, safety boundaries, and verification without publishing a real operator's private workspace.
+This repository is a depersonalized, clone-ready reference harness for Claude Code, Claude Cowork, and Codex. It shows how to organize instructions, user context, projects, templates, outputs, reusable capabilities, safety boundaries, and verification without publishing a real operator's private workspace.
 
 The included Harness Engineering plugin can interview you, audit an existing setup, propose a reviewable plan, apply approved changes with backups, and verify the result from fresh evidence.
 
 ## Install Harness Engineering
 
-Copy this block into Codex:
+On Claude Code:
+
+```bash
+claude plugin marketplace add Israelmusondaayliffe/harness-engineering-public
+claude plugin install harness-engineering@harness-engineering-public
+```
+
+Or inside a session: `/plugin install harness-engineering@harness-engineering-public`.
+
+On Claude Cowork: upload the `plugins/harness-engineering/` folder through My Uploads, or hand Cowork this repository URL and ask it to install the plugin.
+
+On Codex, copy this block:
 
 ```text
 Install the Harness Engineering plugin from the public repository.
 
 Run:
-codex plugin marketplace add Israelmusondaayliffe/codex-workspace-harness-public --ref main
-codex plugin add harness-engineering@codex-workspace-harness
+codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin add harness-engineering@harness-engineering-public
 
-Then confirm that Harness Engineering is enabled and that all 12 namespaced skills are visible. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
+Then confirm that Harness Engineering is enabled and that all 13 namespaced skills are visible. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
 ```
 
 Or run the installation commands directly:
 
 ```bash
-codex plugin marketplace add Israelmusondaayliffe/codex-workspace-harness-public --ref main
-codex plugin add harness-engineering@codex-workspace-harness
+codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin add harness-engineering@harness-engineering-public
 ```
 
 ## What is included
@@ -38,16 +49,16 @@ codex plugin add harness-engineering@codex-workspace-harness
 
 ## Clone the reference harness
 
-Requirements: Git, Codex, and Python 3.9 or newer.
+Requirements: Git, Python 3.9 or newer, and at least one host (Claude Code, Claude Cowork, or Codex).
 
 ```bash
-git clone https://github.com/OWNER/codex-workspace-harness-public.git
-cd codex-workspace-harness-public
+git clone https://github.com/OWNER/harness-engineering-public.git
+cd harness-engineering-public
 codex plugin marketplace add .
-codex plugin add harness-engineering@codex-workspace-harness
+codex plugin add harness-engineering@harness-engineering-public
 ```
 
-Replace `OWNER` with the repository owner when cloning a fork. Then open the repository in Codex and ask:
+Replace `OWNER` with the repository owner when cloning a fork. Then open the repository in your host (Claude Code, Cowork, or Codex) and ask:
 
 ```text
 Use Harness Engineering to interview me, audit this workspace, propose a plan, and stop for review before changing files.
@@ -57,11 +68,11 @@ The plugin does not blindly copy this reference setup. It uses the repository as
 
 ## Manual setup
 
-1. Copy `examples/global/AGENTS.md` to `~/.codex/AGENTS.md` and customize it.
-2. Customize the root `AGENTS.md` for this workspace.
+1. On Codex, copy `examples/global/AGENTS.md` to `~/.codex/AGENTS.md` and customize it. On Claude Code, use it as the model for `~/.claude/CLAUDE.md`.
+2. Customize the root `AGENTS.md` for this workspace. Claude Code sessions load the root `CLAUDE.md`, which defers to the same contract.
 3. Copy the files in `CONTEXT/` without the `.template` suffix and fill them in. The completed files are ignored by Git.
 4. Replace `PROJECTS/example-project/` with a real project and register it in `PROJECTS/README.md`.
-5. Keep finished work in `CODEX-OUTPUTS/YYYY-MM-DD/`.
+5. Keep finished work in `OUTPUTS/YYYY-MM-DD/`.
 6. Run `python3 scripts/verify_repository_safety.py` before every public push.
 
 See [Getting Started](docs/getting-started.md), [Architecture](docs/architecture.md), [Privacy Model](docs/privacy-model.md), and [Customization Guide](docs/customization.md).

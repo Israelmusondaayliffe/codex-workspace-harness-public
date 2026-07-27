@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Verify installation and source-cache parity."""
+"""Verify personal installation and source-cache parity."""
 
 from __future__ import annotations
 
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -26,19 +25,16 @@ def file_map(root: Path) -> dict[str, str]:
 
 def main() -> int:
     source = Path(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]).resolve()
-    manifest = json.loads((source / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    manifest_path = source / ".claude-plugin" / "plugin.json"
+    if not manifest_path.is_file():
+        manifest_path = source / ".codex-plugin" / "plugin.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     version = manifest["version"]
     listing = subprocess.run(["codex", "plugin", "list", "--json"], check=True, capture_output=True, text=True)
-    marketplace = os.environ.get("HARNESS_MARKETPLACE", "codex-workspace-harness")
-    installed = [
-        item
-        for item in json.loads(listing.stdout).get("installed", [])
-        if item.get("name") == "harness-engineering" and item.get("marketplaceName") == marketplace
-    ]
+    installed = [item for item in json.loads(listing.stdout).get("installed", []) if item.get("name") == "harness-engineering" and item.get("marketplaceName") == "personal"]
     if len(installed) != 1 or not installed[0].get("enabled") or installed[0].get("version") != version:
-        raise RuntimeError(f"{marketplace} plugin listing does not match the source manifest")
-    codex_home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))).expanduser()
-    cache = codex_home / "plugins" / "cache" / marketplace / "harness-engineering" / version
+        raise RuntimeError("personal plugin listing does not match the source manifest")
+    cache = Path.home() / ".codex" / "plugins" / "cache" / "personal" / "harness-engineering" / version
     if not cache.is_dir():
         raise RuntimeError(f"installed cache is missing: {cache}")
     source_files = file_map(source)

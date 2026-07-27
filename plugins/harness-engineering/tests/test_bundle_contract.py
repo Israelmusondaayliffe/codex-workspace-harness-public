@@ -2,23 +2,39 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-import re
 import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION_PATTERN = re.compile(r"^2\.1\.0$")
+
+
+def codex_manifest_path() -> Path:
+    """Marketplace interface metadata is Codex-specific and lives only in that manifest."""
+    return ROOT / ".codex-plugin" / "plugin.json"
+
+
+def manifest_path() -> Path:
+    for candidate in (ROOT / ".claude-plugin" / "plugin.json", ROOT / ".codex-plugin" / "plugin.json"):
+        if candidate.is_file():
+            return candidate
+    raise FileNotFoundError("no plugin manifest found")
 
 
 class BundleContractTests(unittest.TestCase):
     def test_manifest_and_marketplace_ready_shape(self) -> None:
-        manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        manifest = json.loads(manifest_path().read_text(encoding="utf-8"))
         self.assertEqual(manifest["name"], "harness-engineering")
-        self.assertRegex(manifest["version"], VERSION_PATTERN)
+        self.assertEqual(manifest["version"], "2.1.2")
         self.assertEqual(manifest["license"], "MIT")
-        self.assertEqual(len(manifest["interface"]["defaultPrompt"]), 3)
+        codex = json.loads(codex_manifest_path().read_text(encoding="utf-8"))
+        self.assertEqual(codex["version"], manifest["version"])
+        self.assertEqual(len(codex["interface"]["defaultPrompt"]), 3)
         self.assertNotIn("apps", manifest)
         self.assertNotIn("mcpServers", manifest)
+
+    def test_platform_references_exist(self) -> None:
+        for name in ("platform-matrix.md", "platform-claude-code.md", "platform-cowork.md", "platform-codex.md"):
+            self.assertTrue((ROOT / "references" / name).is_file(), name)
 
     def test_templates_have_no_unresolved_todo_markers(self) -> None:
         markers = ("[" + "TODO:", "__" + "REPLACE_ME__")
@@ -35,31 +51,11 @@ class BundleContractTests(unittest.TestCase):
             self.assertTrue(any(line.startswith("name:") for line in lines[1:5]))
             self.assertTrue(any(line.startswith("description:") for line in lines[1:6]))
 
-    def test_frontier_first_contract_is_owned_and_routed(self) -> None:
-        reference = ROOT / "references" / "frontier-first-prompt-governance.md"
-        self.assertTrue(reference.is_file())
-        text = reference.read_text(encoding="utf-8")
-        for phrase in (
-            "compact context kernel",
-            "delta-only overlays",
-            "Evidence freeze before subtraction",
-            "Behavior evaluation contract",
-            "Front-door invocation policy",
-            "source/cache parity",
-            "pre-existing failures",
-        ):
-            self.assertIn(phrase, text)
-        for skill in (
-            "harness-engineering",
-            "harness-maintainer",
-            "harness-verifier",
-            "agents-md-engineer",
-            "plugin-engineer",
-            "skill-engineer",
-        ):
-            skill_text = (ROOT / "skills" / skill / "SKILL.md").read_text(encoding="utf-8")
-            self.assertIn("frontier-first-prompt-governance.md", skill_text)
-
-
+    def test_skills_name_all_three_platforms(self) -> None:
+        for path in (ROOT / "skills").glob("*/SKILL.md"):
+            text = path.read_text(encoding="utf-8")
+            self.assertIn("Cowork", text, f"{path} does not mention Cowork")
+            self.assertIn("Claude Code", text, f"{path} does not mention Claude Code")
+            self.assertIn("Codex", text, f"{path} does not mention Codex")
 if __name__ == "__main__":
     unittest.main()

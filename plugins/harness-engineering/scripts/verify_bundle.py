@@ -12,6 +12,7 @@ import sys
 
 EXPECTED_SKILLS = {
     "agents-md-engineer",
+    "context-doctor",
     "harness-audit",
     "harness-builder",
     "harness-engineering",
@@ -25,7 +26,7 @@ EXPECTED_SKILLS = {
     "skill-engineer",
 }
 TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml", ".py"}
-VERSION_PATTERN = re.compile(r"^2\.1\.0$")
+VERSION_PATTERN = re.compile(r"^2\.1\.2$")
 
 
 def fail(message: str) -> None:
@@ -34,15 +35,24 @@ def fail(message: str) -> None:
 
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]).resolve()
-    manifest_path = root / ".codex-plugin" / "plugin.json"
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    version = manifest.get("version")
-    if manifest.get("name") != "harness-engineering" or not isinstance(version, str) or not VERSION_PATTERN.fullmatch(version):
-        fail("manifest identity or version is incorrect")
-    if manifest.get("author", {}).get("name") != "Harness Engineering Contributors" or manifest.get("license") != "MIT":
-        fail("publisher or license metadata is incorrect")
-    if "apps" in manifest or "mcpServers" in manifest or "hooks" in manifest:
-        fail("manifest declares a component that the plugin does not ship")
+    manifests = {}
+    for platform in ("codex", "claude"):
+        manifest_path = root / f".{platform}-plugin" / "plugin.json"
+        if not manifest_path.is_file():
+            fail(f"{platform} manifest is missing")
+        manifests[platform] = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest = manifests["codex"]
+    for field in ("name", "version", "description", "license"):
+        if manifests["codex"].get(field) != manifests["claude"].get(field):
+            fail(f"manifest {field} differs across Codex and Claude")
+    for platform, platform_manifest in manifests.items():
+        version = platform_manifest.get("version")
+        if platform_manifest.get("name") != "harness-engineering" or not isinstance(version, str) or not VERSION_PATTERN.fullmatch(version):
+            fail(f"{platform} manifest identity or version is incorrect")
+        if platform_manifest.get("author", {}).get("name") != "Israel Ayliffe" or platform_manifest.get("license") != "MIT":
+            fail(f"{platform} publisher or license metadata is incorrect")
+        if "apps" in platform_manifest or "mcpServers" in platform_manifest or "hooks" in platform_manifest:
+            fail(f"{platform} manifest declares a component that the plugin does not ship")
 
     actual = {path.parent.name for path in (root / "skills").glob("*/SKILL.md")}
     if actual != EXPECTED_SKILLS:
@@ -52,12 +62,19 @@ def main() -> int:
     validations = []
     for name in sorted(EXPECTED_SKILLS):
         skill_dir = root / "skills" / name
-        result = subprocess.run([sys.executable, str(validator), str(skill_dir)], capture_output=True, text=True)
-        if result.returncode != 0:
-            fail(f"skill validation failed for {name}: {result.stdout}{result.stderr}")
-        metadata = (skill_dir / "agents" / "openai.yaml").read_text(encoding="utf-8")
-        if f"${name}" not in metadata:
-            fail(f"default prompt does not name ${name}")
+        if validator.is_file():
+            result = subprocess.run([sys.executable, str(validator), str(skill_dir)], capture_output=True, text=True)
+            if result.returncode != 0:
+                fail(f"skill validation failed for {name}: {result.stdout}{result.stderr}")
+        else:
+            text = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
+            if not text.startswith("---") or "description:" not in text.splitlines()[2][:12] and not any(l.startswith("description:") for l in text.splitlines()[:6]):
+                fail(f"SKILL.md frontmatter incomplete for {name}")
+        metadata_path = skill_dir / "agents" / "openai.yaml"
+        if metadata_path.is_file():
+            metadata = metadata_path.read_text(encoding="utf-8")
+            if f"${name}" not in metadata:
+                fail(f"default prompt does not name ${name}")
         validations.append(name)
 
     for path in root.rglob("*"):
@@ -87,7 +104,7 @@ def main() -> int:
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
         fail(f"required files missing: {missing}")
-    print(json.dumps({"plugin": "harness-engineering", "version": version, "skills_validated": validations}, indent=2))
+    print(json.dumps({"plugin": "harness-engineering", "version": manifest["version"], "skills_validated": validations}, indent=2))
     return 0
 
 

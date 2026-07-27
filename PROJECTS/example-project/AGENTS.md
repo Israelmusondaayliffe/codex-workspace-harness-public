@@ -12,7 +12,7 @@ Read `references/workflow.md` before changing project files. Place temporary bri
 
 ## Outputs
 
-Write finished artifacts to `CODEX-OUTPUTS/YYYY-MM-DD/example-project_[type]_v1.ext`.
+Write finished artifacts to `OUTPUTS/YYYY-MM-DD/example-project_[type]_v1.ext`.
 
 ## Workflow
 

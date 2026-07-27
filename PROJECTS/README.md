@@ -25,7 +25,7 @@ Load in this order:
 
 Finished artifacts write to:
 
-`CODEX-OUTPUTS/YYYY-MM-DD/example-project_[type]_v1.ext`
+`OUTPUTS/YYYY-MM-DD/example-project_[type]_v1.ext`
 
 ## Harness maintenance
 

@@ -12,8 +12,8 @@
 .impeccable/
 __pycache__/
 .pytest_cache/
-CODEX-OUTPUTS/*
-!CODEX-OUTPUTS/README.md
+OUTPUTS/*
+!OUTPUTS/README.md
 CONTEXT/*.md
 !CONTEXT/README.md
 !CONTEXT/*.template.md

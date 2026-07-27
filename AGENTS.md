@@ -1,6 +1,6 @@
 # Workspace AGENTS.md
 
-This file is the workspace contract for a reusable Codex harness. A global contract may exist at `~/.codex/AGENTS.md`; project contracts inside `PROJECTS/` add narrower instructions.
+This file is the workspace contract for a reusable multi-host harness (Claude Code, Claude Cowork, Codex). A global contract may exist at `~/.codex/AGENTS.md` on Codex or `~/.claude/CLAUDE.md` on Claude Code; project contracts inside `PROJECTS/` add narrower instructions. On Claude Code the root `CLAUDE.md` defers to this file, so the contract is written once.
 
 ## Purpose
 
@@ -22,7 +22,7 @@ Ask only when missing information changes the result or safety boundary. Otherwi
 - `CONTEXT/`: private operator context. Completed files are ignored by Git.
 - `PROJECTS/`: project registries, contracts, and references.
 - `TEMPLATES/`: reusable output and workflow shapes.
-- `CODEX-OUTPUTS/YYYY-MM-DD/`: finished generated work. Contents are ignored by Git.
+- `OUTPUTS/YYYY-MM-DD/`: finished generated work. Contents are ignored by Git.
 - `plugins/`: bundled, distributable capabilities.
 - `integrations/`: optional templates that remain disabled until reviewed.
 
@@ -38,11 +38,11 @@ Use progressive disclosure:
 4. Read only the referenced files required by the task.
 5. Load a skill or plugin when its trigger matches the work.
 
-The closest `AGENTS.md` wins when instructions conflict.
+The closest contract file (`AGENTS.md`, or `CLAUDE.md` on Claude Code) wins when instructions conflict.
 
 ## Outputs
 
-Finished work belongs in `CODEX-OUTPUTS/YYYY-MM-DD/` and uses `projectname_type_v1.ext`. Increment the version instead of silently overwriting an earlier deliverable. Source code for a real project belongs in its own project or repository, not in the output folder.
+Finished work belongs in `OUTPUTS/YYYY-MM-DD/` and uses `projectname_type_v1.ext`. Increment the version instead of silently overwriting an earlier deliverable. Source code for a real project belongs in its own project or repository, not in the output folder.
 
 ## Safety and authority
 

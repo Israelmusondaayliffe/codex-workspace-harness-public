@@ -15,7 +15,7 @@ ALLOWED_TOP_LEVEL = {
     ".agents",
     ".gitignore",
     "AGENTS.md",
-    "CODEX-OUTPUTS",
+    "OUTPUTS",
     "CONTEXT",
     "CONTRIBUTING.md",
     "LICENSE",
@@ -107,7 +107,7 @@ def main() -> int:
         if not hidden_path_allowed(relative):
             problems.append(f"unexpected hidden path: {relative}")
 
-        if relative.parts[0] == "CODEX-OUTPUTS" and relative != PurePosixPath("CODEX-OUTPUTS/README.md"):
+        if relative.parts[0] == "OUTPUTS" and relative != PurePosixPath("OUTPUTS/README.md"):
             problems.append(f"generated output is tracked: {relative}")
         if relative.parts[0] == "CONTEXT" and relative.name != "README.md" and not relative.name.endswith(".template.md"):
             problems.append(f"completed context is tracked: {relative}")
@@ -123,7 +123,7 @@ def main() -> int:
     try:
         data = json.loads(marketplace.read_text(encoding="utf-8"))
         entry = data["plugins"][0]
-        if data.get("name") != "codex-workspace-harness":
+        if data.get("name") != "harness-engineering-public":
             problems.append("marketplace name is incorrect")
         if entry.get("name") != "harness-engineering":
             problems.append("bundled plugin entry is missing")

@@ -26,7 +26,7 @@ Global instructions hold durable defaults. Workspace instructions define shared 
 | `CONTEXT/` | Operator context templates | Only templates tracked |
 | `PROJECTS/` | Registry, contracts, references | Generic examples tracked |
 | `TEMPLATES/` | Reusable output shapes | Tracked |
-| `CODEX-OUTPUTS/` | Generated work | Contents ignored |
+| `OUTPUTS/` | Generated work | Contents ignored |
 | `plugins/` | Reusable capabilities | Tracked and validated |
 | `integrations/` | Optional inactive templates | Tracked only after review |
 

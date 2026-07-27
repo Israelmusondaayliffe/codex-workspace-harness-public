@@ -18,4 +18,4 @@ Harness Engineering treats technical access as separate from user authority. It 
 
 Do not silently install third-party code, trust hooks, authenticate connectors, edit external accounts, create public repositories, or publish marketplace entries.
 
-Report security issues through the repository's private security-reporting channel before public disclosure. Do not include credentials or private source material in a public issue.
+Report security issues privately to the publisher before public disclosure. A public contact address will be added before marketplace submission.

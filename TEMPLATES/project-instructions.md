@@ -28,7 +28,7 @@ This file overlays the workspace and global `AGENTS.md` when Codex is working in
 
 ## Workflow
 
-[The standard sequence for a typical task. Usually 4 to 8 steps. Every sequence ends with: write to `CODEX-OUTPUTS`, announce the path, run the verification checklist.]
+[The standard sequence for a typical task. Usually 4 to 8 steps. Every sequence ends with: write to `OUTPUTS`, announce the path, run the verification checklist.]
 
 ## Success Criteria
 

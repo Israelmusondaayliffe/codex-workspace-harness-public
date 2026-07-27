@@ -5,15 +5,15 @@
 Install directly from the public GitHub repository:
 
 ```bash
-codex plugin marketplace add Israelmusondaayliffe/codex-workspace-harness-public --ref main
-codex plugin add harness-engineering@codex-workspace-harness
+codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin add harness-engineering@harness-engineering-public
 ```
 
 If you are working from a local clone or fork, add that repository root instead:
 
 ```bash
 codex plugin marketplace add .
-codex plugin add harness-engineering@codex-workspace-harness
+codex plugin add harness-engineering@harness-engineering-public
 ```
 
 Confirm the plugin is listed and enabled:

@@ -15,7 +15,7 @@ Use before announcing that a task is complete.
 
 ## Files
 
-- Finished output is inside `CODEX-OUTPUTS/YYYY-MM-DD/` under the active workspace.
+- Finished output is inside `OUTPUTS/YYYY-MM-DD/` under the active workspace.
 - Filename follows `projectname_type_v1.ext`.
 - Later versions increment the version number instead of overwriting.
 - For text and Markdown, run:

@@ -26,6 +26,6 @@ Before marking a Goal complete:
 - Confirm the evidence surface exists.
 - Confirm the constraints still hold.
 - Confirm no protected path was changed.
-- Confirm any output files live in `CODEX-OUTPUTS/YYYY-MM-DD/`.
+- Confirm any output files live in `OUTPUTS/YYYY-MM-DD/`.
 - Run the relevant verification script or artifact-specific check.
 - Confirm Browser or Computer Use actions were checked against fresh state after the action.
