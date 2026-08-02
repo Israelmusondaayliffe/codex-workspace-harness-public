@@ -36,6 +36,15 @@ class BundleContractTests(unittest.TestCase):
         for name in ("platform-matrix.md", "platform-claude-code.md", "platform-cowork.md", "platform-codex.md"):
             self.assertTrue((ROOT / "references" / name).is_file(), name)
 
+    def test_cowork_packaging_is_zip_based_and_documented(self) -> None:
+        package_script = ROOT / "scripts" / "package_plugin.py"
+        self.assertTrue(package_script.is_file())
+        for readme_path in (ROOT / "README.md", ROOT.parents[1] / "README.md"):
+            readme = readme_path.read_text(encoding="utf-8")
+            self.assertIn("package_plugin.py build", readme)
+            self.assertIn(".zip", readme)
+            self.assertNotIn("harness-engineering.plugin", readme)
+
     def test_templates_have_no_unresolved_todo_markers(self) -> None:
         markers = ("[" + "TODO:", "__" + "REPLACE_ME__")
         for path in ROOT.rglob("*"):

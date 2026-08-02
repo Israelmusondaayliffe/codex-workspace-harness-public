@@ -24,7 +24,7 @@ Design rule: any state the harness needs next week must land in a connected fold
 
 ## Plugins and skills
 
-- A plugin is delivered as a `.plugin` file (a zip with `.claude-plugin/plugin.json` at the archive root). Sent in chat, it renders an install card; one press installs it for the user. This is the primary distribution path, ahead of marketplaces, folder copies, or manual moves.
+- Anthropic documents two supported distribution paths: upload a custom plugin file in **Customize** > **Plugins**, or add a plugin marketplace from a GitHub repository or git URL. For a manually uploaded release candidate, use a valid ZIP with `.claude-plugin/plugin.json` at the archive root. Do not claim that a folder, repository URL pasted into chat, or a `.plugin` extension alone is an install method without live proof from the current app. See Anthropic's [plugin guide](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) and [marketplace guide](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 - Plugin structure follows the shared schema: `skills/*/SKILL.md`, optional `agents/`, optional `.mcp.json`, manifest in `.claude-plugin/`.
 - Skills use progressive disclosure: lean SKILL.md, depth in `references/`.
 - Namespaced plugin skills outrank loose copies of the same skill when both exist.
@@ -32,7 +32,7 @@ Design rule: any state the harness needs next week must land in a connected fold
 ## Verification
 
 - Structural: manifest parses, every skill directory has a valid SKILL.md, no placeholders.
-- Behavioral: the plugin appears in the user's plugin list after install, and a fresh task lists the namespaced skills in its capability inventory.
+- Behavioral: the plugin appears in the user's plugin list after install, and a fresh task lists the namespaced skills in its capability inventory. Static ZIP validation does not establish either result.
 - Contract files: prove they exist at the connected folder root and that the session actually read them, not that they merely exist.
 - There is no CLI validator inside a Cowork session. Verify structure with scripts in the sandbox and behavior from the live app surface.
 

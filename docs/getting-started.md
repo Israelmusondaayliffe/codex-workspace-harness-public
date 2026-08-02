@@ -22,6 +22,19 @@ Confirm the plugin is listed and enabled:
 codex plugin list --json
 ```
 
+### Claude Cowork
+
+Build a portable ZIP from the bundled plugin:
+
+```bash
+python3 plugins/harness-engineering/scripts/package_plugin.py build \
+  --output plugins/harness-engineering/dist/harness-engineering.zip
+```
+
+The command validates the archive against the source before writing it. In Claude Desktop, open **Cowork**, then **Customize** > **Plugins**, choose the custom-plugin upload option, and select the generated ZIP. Do not upload the plugin folder or rely on a chat attachment install card.
+
+You can also add this repository through **Customize** > **Plugins** > **+** > **Add marketplace** > **Add from a repository**, then install the plugin from that marketplace. The archive format and both UI paths are documented in Anthropic's [plugin guide](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) and [organization marketplace guide](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization); this local clone has static package proof only, not a live Cowork installation or fresh-task discovery result.
+
 ## 2. Create private context
 
 Copy each file in `CONTEXT/` without the `.template` suffix. Completed context files are ignored by Git. Add only information that changes how work should be planned or executed.

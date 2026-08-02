@@ -15,7 +15,16 @@ claude plugin install harness-engineering@harness-engineering-public
 
 Or inside a session: `/plugin install harness-engineering@harness-engineering-public`.
 
-On Claude Cowork: upload the `plugins/harness-engineering/` folder through My Uploads, or hand Cowork this repository URL and ask it to install the plugin.
+On Claude Cowork, package the plugin as a ZIP, then use the custom-plugin upload in Claude Desktop:
+
+```bash
+python3 plugins/harness-engineering/scripts/package_plugin.py build \
+  --output plugins/harness-engineering/dist/harness-engineering.zip
+```
+
+In Claude Desktop, open **Cowork** and then **Customize** > **Plugins**. Choose the custom-plugin upload option and select the generated `harness-engineering.zip`. The ZIP is a generated, ignored release candidate, not a tracked repository file. The package command performs static archive validation; this isolated clone has not performed a live Cowork installation or fresh-task discovery test. See Anthropic's [plugin installation guide](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) for the current UI.
+
+Alternatively, add this repository as a plugin marketplace from **Customize** > **Plugins** > **+** > **Add marketplace** > **Add from a repository**, then install Harness Engineering from that marketplace. This route also has not been live-tested in this clone.
 
 On Codex, copy this block:
 
@@ -71,7 +80,7 @@ codex plugin marketplace add .
 codex plugin add harness-engineering@harness-engineering-public
 ```
 
-Replace `OWNER` with the repository owner when cloning a fork. Then open the repository in your host (Claude Code, Cowork, or Codex) and ask:
+Replace `OWNER` with the repository owner when cloning a fork. The local-clone commands above are for Codex. For Claude Code, use its marketplace commands. For Claude Cowork, use the ZIP upload or marketplace route described above rather than opening the folder as an install method. Then open the repository in your host and ask:
 
 ```text
 Use Harness Engineering to interview me, audit this workspace, propose a plan, and stop for review before changing files.

@@ -22,7 +22,13 @@ On Claude 5 generation models the common defect in an inherited harness is over-
 
 ## Install
 
-Claude Cowork: install the delivered `harness-engineering.plugin` file from chat with one press, or install from your marketplace in the app.
+Claude Cowork: build a portable ZIP, then select it through the custom-plugin upload in Claude Desktop's **Cowork** > **Customize** > **Plugins** flow:
+
+```bash
+python3 scripts/package_plugin.py build --output dist/harness-engineering.zip
+```
+
+The command performs static source-to-archive validation. `dist/` is intentionally ignored, so the ZIP is not tracked or released by this repository. Anthropic also documents [custom plugin uploads](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) and [repository-backed marketplaces](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization). Neither a live Cowork install nor fresh-task discovery is asserted here.
 
 Claude Code:
 

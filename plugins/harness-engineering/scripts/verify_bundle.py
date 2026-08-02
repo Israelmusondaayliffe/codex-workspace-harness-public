@@ -98,6 +98,7 @@ def main() -> int:
         root / "SECURITY.md",
         root / "TERMS.md",
         root / "scripts" / "harnessctl.py",
+        root / "scripts" / "package_plugin.py",
         root / "schemas" / "profile.schema.json",
         root / "schemas" / "operations.schema.json",
     ]

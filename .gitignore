@@ -12,6 +12,7 @@
 .impeccable/
 __pycache__/
 .pytest_cache/
+plugins/harness-engineering/dist/
 OUTPUTS/*
 !OUTPUTS/README.md
 CONTEXT/*.md
