@@ -13,8 +13,10 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_TOP_LEVEL = {
     ".agents",
+    ".claude-plugin",
     ".gitignore",
     "AGENTS.md",
+    "CLAUDE.md",
     "OUTPUTS",
     "CONTEXT",
     "CONTRIBUTING.md",
@@ -43,6 +45,8 @@ DISALLOWED_PARTS = {
 }
 ALLOWED_HIDDEN_PREFIXES = {
     PurePosixPath(".agents/plugins/marketplace.json"),
+    PurePosixPath(".claude-plugin/marketplace.json"),
+    PurePosixPath("plugins/harness-engineering/.claude-plugin/plugin.json"),
     PurePosixPath("plugins/harness-engineering/.codex-plugin/plugin.json"),
     PurePosixPath("integrations/claude-code-codex-bridge/template/.claude/settings.json"),
     PurePosixPath("integrations/claude-code-codex-bridge/template/.claude/hooks/session-start.sh"),
@@ -135,6 +139,7 @@ def main() -> int:
 
     required_files = {
         PurePosixPath("AGENTS.md"),
+        PurePosixPath(".claude-plugin/marketplace.json"),
         PurePosixPath("README.md"),
         PurePosixPath(".agents/plugins/marketplace.json"),
         PurePosixPath("plugins/harness-engineering/.codex-plugin/plugin.json"),

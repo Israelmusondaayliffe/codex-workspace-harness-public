@@ -32,7 +32,16 @@ Copy `PROJECTS/example-project/`, rename it with a short slug, replace its contr
 
 ## 4. Run Harness Engineering
 
-Ask the plugin to interview you and audit the workspace. Review the resulting plan before approving any file changes, hooks, authentication, installation, or publication.
+Follow this sequence:
+
+1. Start with the plugin's interview, or say `grill me`.
+2. Ask it to audit the current setup. Keep this stage read-only.
+3. Review the proposed plan and operation groups.
+4. Approve only the changes you want.
+
+Use approval-first permissions by default. Choose a manual, plan, or review-before-each-change mode when your host offers one. Do not begin with full access. Broader access should be a specific, reviewed decision for a known operation.
+
+The core workflow is self-contained in this plugin. Optional integrations can be detected or added later, but they are not prerequisites for interview, audit, planning, approved changes, or verification.
 
 ## 5. Verify
 

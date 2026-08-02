@@ -36,6 +36,19 @@ codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --r
 codex plugin add harness-engineering@harness-engineering-public
 ```
 
+## Recommended first run
+
+Use this order after installation:
+
+1. Start with the plugin's interview, or say `grill me`, so it can learn what you need.
+2. Ask it to audit your current setup. The audit should be read-only.
+3. Read the proposed plan and operation groups.
+4. Approve only the changes you actually want.
+
+Use approval-first permissions by default. Choose a manual, plan, or review-before-each-change mode when your host offers one. Do not start with full access. Grant broader access only for a specific reviewed operation when you understand the files, permissions, and external actions involved.
+
+The core Harness Engineering workflow works as one installed plugin. Optional integrations may be detected or used later, but they are not required for the core interview, audit, planning, approved-build, and verification flow.
+
 ## What is included
 
 - A layered `AGENTS.md` example for global, workspace, and project scopes.

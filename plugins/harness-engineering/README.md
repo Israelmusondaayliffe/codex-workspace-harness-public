@@ -27,7 +27,8 @@ Claude Cowork: install the delivered `harness-engineering.plugin` file from chat
 Claude Code:
 
 ```bash
-claude plugin install harness-engineering@israel-plugins
+claude plugin marketplace add Israelmusondaayliffe/harness-engineering-public
+claude plugin install harness-engineering@harness-engineering-public
 ```
 
 or test a local checkout with `claude --plugin-dir ./plugins/harness-engineering`.
@@ -35,8 +36,8 @@ or test a local checkout with `claude --plugin-dir ./plugins/harness-engineering
 Codex:
 
 ```bash
-codex plugin marketplace add Israelmusondaayliffe/plugins --ref main
-codex plugin add harness-engineering@israel-plugins
+codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin add harness-engineering@harness-engineering-public
 ```
 
 Start a new task after installation so the plugin's skills appear in the task capability inventory.
