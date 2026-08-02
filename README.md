@@ -26,7 +26,7 @@ Run:
 codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
 codex plugin add harness-engineering@harness-engineering-public
 
-Then confirm that Harness Engineering is enabled and that all 13 namespaced skills are visible. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
+Then confirm that Harness Engineering is enabled and that its 13 skills are installed and available. A generic task may expose only the front door and the relevant implicit skills, rather than all 13 at once. To choose a specialist explicitly, invoke its full namespaced skill, such as `$harness-engineering:harness-interview` or `$harness-engineering:harness-verifier`. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
 ```
 
 Or run the installation commands directly:

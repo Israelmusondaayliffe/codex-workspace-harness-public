@@ -20,7 +20,7 @@ The manifest schema is shared; the packaging, install, and proof paths are not. 
 
 - Claude Cowork: package the plugin directory as a `.plugin` zip with the manifest at the archive root and deliver the file in chat so the install card renders. That is the primary path; do not route users through marketplaces, folder copies, or manual installs unless they ask.
 - Claude Code: scaffold or validate with `claude plugin validate`, install with `/plugin` or `claude plugin install` (test via `--plugin-dir`), and compare source against the cache under `~/.claude/plugins/cache/` after marketplace installs.
-- Codex: scaffold with the system `plugin-creator` skill, install through `codex plugin marketplace add` and `codex plugin add`, verify with `codex plugin list --json` and `scripts/verify_install.py` source-cache parity.
+- Codex: scaffold with the system `plugin-creator` skill, install through `codex plugin marketplace add` and `codex plugin add`, verify with `codex plugin list --json`, then run `scripts/verify_install.py <plugin-path> --marketplace <marketplace-name>`. The verifier derives the cache root from `CODEX_HOME` or `~/.codex` and accepts `--cache-root` for an explicit isolated cache.
 
 For task-start policy, keep the personal plugin front door implicit and hide an owned specialist only after a deterministic front-door case proves reachability. Keep explicit-only plugin skills and exact loose mirrors out of default context. Preserve unrelated metadata, roll out in reversible waves, and run an actual explicit hidden-skill smoke. Follow `../../references/frontier-first-prompt-governance.md`.
 
