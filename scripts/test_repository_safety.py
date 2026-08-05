@@ -31,15 +31,16 @@ class RepositorySafetyTests(unittest.TestCase):
             "README.md": "public harness\n",
             ".claude-plugin/marketplace.json": json.dumps(
                 {
-                    "name": "harness-engineering-public",
-                    "owner": {"name": "Public Maintainers"},
+                    "name": "community-agent-plugins",
+                    "owner": {"name": "Community Maintainers"},
                     "metadata": {"description": "Public harness"},
                     "plugins": [{"name": "harness-engineering", "source": "./plugins/harness-engineering", "version": "2.1.2"}],
                 }
             ),
             ".agents/plugins/marketplace.json": json.dumps(
                 {
-                    "name": "harness-engineering-public",
+                    "name": "community-agent-plugins",
+                    "interface": {"displayName": "Community Agent Plugins"},
                     "plugins": [{"name": "harness-engineering", "source": {"path": "./plugins/harness-engineering"}}],
                 }
             ),

@@ -14,13 +14,13 @@ SPEC.loader.exec_module(verify_install)
 
 
 class VerifyInstallTests(unittest.TestCase):
-    def make_source_and_cache(self, root: Path, marketplace: str = "harness-engineering-public") -> tuple[Path, Path]:
+    def make_source_and_cache(self, root: Path, marketplace: str = "community-agent-plugins") -> tuple[Path, Path]:
         source = root / "plugin"
-        cache = root / "cache" / marketplace / "harness-engineering" / "2.1.2"
+        cache = root / "cache" / marketplace / "harness-engineering" / "2.3.0"
         (source / ".codex-plugin").mkdir(parents=True)
         cache.mkdir(parents=True)
         files = {
-            ".codex-plugin/plugin.json": '{"name": "harness-engineering", "version": "2.1.2"}\n',
+            ".codex-plugin/plugin.json": '{"name": "harness-engineering", "version": "2.3.0"}\n',
             "README.md": "public plugin\n",
         }
         for relative, content in files.items():
@@ -38,7 +38,7 @@ class VerifyInstallTests(unittest.TestCase):
                 {
                     "name": "harness-engineering",
                     "marketplaceName": marketplace,
-                    "version": "2.1.2",
+                    "version": "2.3.0",
                     "enabled": True,
                 }
                 for marketplace in marketplaces
@@ -50,11 +50,11 @@ class VerifyInstallTests(unittest.TestCase):
             source, cache_root = self.make_source_and_cache(Path(temp))
             result = verify_install.verify_install(
                 source,
-                self.listing("harness-engineering-public"),
-                marketplace="harness-engineering-public",
+                self.listing("community-agent-plugins"),
+                marketplace="community-agent-plugins",
                 cache_root=cache_root,
             )
-            self.assertEqual(result["marketplace"], "harness-engineering-public")
+            self.assertEqual(result["marketplace"], "community-agent-plugins")
             self.assertTrue(result["parity"])
 
     def test_single_matching_marketplace_is_inferred(self) -> None:

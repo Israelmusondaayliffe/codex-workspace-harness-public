@@ -1,7 +1,7 @@
 {
-  "name": "harness-engineering-public",
+  "name": "community-agent-plugins",
   "interface": {
-    "displayName": "Codex Workspace Harness"
+    "displayName": "Community Agent Plugins"
   },
   "plugins": [
     {
@@ -15,7 +15,7 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "2.1.2"
+      "version": "2.3.0"
     }
   ]
 }

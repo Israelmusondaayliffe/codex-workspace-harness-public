@@ -10,10 +10,10 @@ On Claude Code:
 
 ```bash
 claude plugin marketplace add Israelmusondaayliffe/harness-engineering-public
-claude plugin install harness-engineering@harness-engineering-public
+claude plugin install harness-engineering@community-agent-plugins
 ```
 
-Or inside a session: `/plugin install harness-engineering@harness-engineering-public`.
+Or inside a session: `/plugin install harness-engineering@community-agent-plugins`.
 
 On Claude Cowork, package the plugin as a ZIP, then use the custom-plugin upload in Claude Desktop:
 
@@ -33,7 +33,7 @@ Install the Harness Engineering plugin from the public repository.
 
 Run:
 codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
-codex plugin add harness-engineering@harness-engineering-public
+codex plugin add harness-engineering@community-agent-plugins
 
 Then confirm that Harness Engineering is enabled and that its 13 skills are installed and available. A generic task may expose only the front door and the relevant implicit skills, rather than all 13 at once. To choose a specialist explicitly, invoke its full namespaced skill, such as `$harness-engineering:harness-interview` or `$harness-engineering:harness-verifier`. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
 ```
@@ -42,7 +42,7 @@ Or run the installation commands directly:
 
 ```bash
 codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
-codex plugin add harness-engineering@harness-engineering-public
+codex plugin add harness-engineering@community-agent-plugins
 ```
 
 ## Recommended first run
@@ -77,7 +77,7 @@ Requirements: Git, Python 3.9 or newer, and at least one host (Claude Code, Clau
 git clone https://github.com/OWNER/harness-engineering-public.git
 cd harness-engineering-public
 codex plugin marketplace add .
-codex plugin add harness-engineering@harness-engineering-public
+codex plugin add harness-engineering@community-agent-plugins
 ```
 
 Replace `OWNER` with the repository owner when cloning a fork. The local-clone commands above are for Codex. For Claude Code, use its marketplace commands. For Claude Cowork, use the ZIP upload or marketplace route described above rather than opening the folder as an install method. Then open the repository in your host and ask:

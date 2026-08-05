@@ -124,16 +124,24 @@ def main() -> int:
                 problems.append(f"{label} detected: {relative}")
 
     marketplace = ROOT / ".agents" / "plugins" / "marketplace.json"
+    claude_marketplace = ROOT / ".claude-plugin" / "marketplace.json"
     try:
         data = json.loads(marketplace.read_text(encoding="utf-8"))
         entry = data["plugins"][0]
-        if data.get("name") != "harness-engineering-public":
+        if data.get("name") != "community-agent-plugins":
             problems.append("marketplace name is incorrect")
+        if data.get("interface", {}).get("displayName") != "Community Agent Plugins":
+            problems.append("marketplace display name is incorrect")
         if entry.get("name") != "harness-engineering":
             problems.append("bundled plugin entry is missing")
         plugin_path = entry.get("source", {}).get("path")
         if plugin_path != "./plugins/harness-engineering":
             problems.append("bundled plugin source path is incorrect")
+        claude_data = json.loads(claude_marketplace.read_text(encoding="utf-8"))
+        if claude_data.get("name") != "community-agent-plugins":
+            problems.append("Claude marketplace name is incorrect")
+        if claude_data.get("owner", {}).get("name") != "Community Maintainers":
+            problems.append("Claude marketplace owner name is incorrect")
     except (OSError, ValueError, KeyError, IndexError, TypeError) as exc:
         problems.append(f"marketplace manifest is invalid: {exc}")
 

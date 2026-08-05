@@ -1,17 +1,17 @@
 {
-  "name": "harness-engineering-public",
+  "name": "community-agent-plugins",
   "owner": {
-    "name": "Israel Ayliffe"
+    "name": "Community Maintainers"
   },
   "metadata": {
-    "description": "A public, workshop-ready Harness Engineering plugin for Claude Code, Claude Cowork, and Codex."
+    "description": "Community Agent Plugins marketplace with a public, workshop-ready Harness Engineering plugin for Claude Code, Claude Cowork, and Codex."
   },
   "plugins": [
     {
       "name": "harness-engineering",
       "source": "./plugins/harness-engineering",
       "description": "Design, build, verify, and maintain a personalized AI operating harness on Claude Code, Claude Cowork, or Codex.",
-      "version": "2.1.2"
+      "version": "2.3.0"
     }
   ]
 }

@@ -34,7 +34,7 @@ Claude Code:
 
 ```bash
 claude plugin marketplace add Israelmusondaayliffe/harness-engineering-public
-claude plugin install harness-engineering@harness-engineering-public
+claude plugin install harness-engineering@community-agent-plugins
 ```
 
 or test a local checkout with `claude --plugin-dir ./plugins/harness-engineering`.
@@ -43,7 +43,7 @@ Codex:
 
 ```bash
 codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
-codex plugin add harness-engineering@harness-engineering-public
+codex plugin add harness-engineering@community-agent-plugins
 ```
 
 Start a new task after installation so the plugin's skills appear in the task capability inventory.
