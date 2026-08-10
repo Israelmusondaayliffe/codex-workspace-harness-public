@@ -11,7 +11,7 @@
       "name": "harness-engineering",
       "source": "./plugins/harness-engineering",
       "description": "Design, build, verify, and maintain a personalized AI operating harness on Claude Code, Claude Cowork, or Codex.",
-      "version": "2.3.0"
+      "version": "2.5.0"
     }
   ]
 }

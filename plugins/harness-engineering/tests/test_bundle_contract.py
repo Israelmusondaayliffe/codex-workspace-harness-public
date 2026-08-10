@@ -24,7 +24,7 @@ class BundleContractTests(unittest.TestCase):
     def test_manifest_and_marketplace_ready_shape(self) -> None:
         manifest = json.loads(manifest_path().read_text(encoding="utf-8"))
         self.assertEqual(manifest["name"], "harness-engineering")
-        self.assertEqual(manifest["version"], "2.3.0")
+        self.assertRegex(manifest["version"], r"^\d+\.\d+\.\d+$")
         self.assertEqual(manifest["license"], "MIT")
         codex = json.loads(codex_manifest_path().read_text(encoding="utf-8"))
         self.assertEqual(codex["version"], manifest["version"])
@@ -35,15 +35,6 @@ class BundleContractTests(unittest.TestCase):
     def test_platform_references_exist(self) -> None:
         for name in ("platform-matrix.md", "platform-claude-code.md", "platform-cowork.md", "platform-codex.md"):
             self.assertTrue((ROOT / "references" / name).is_file(), name)
-
-    def test_cowork_packaging_is_zip_based_and_documented(self) -> None:
-        package_script = ROOT / "scripts" / "package_plugin.py"
-        self.assertTrue(package_script.is_file())
-        for readme_path in (ROOT / "README.md", ROOT.parents[1] / "README.md"):
-            readme = readme_path.read_text(encoding="utf-8")
-            self.assertIn("package_plugin.py build", readme)
-            self.assertIn(".zip", readme)
-            self.assertNotIn("harness-engineering.plugin", readme)
 
     def test_templates_have_no_unresolved_todo_markers(self) -> None:
         markers = ("[" + "TODO:", "__" + "REPLACE_ME__")

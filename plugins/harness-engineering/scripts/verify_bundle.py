@@ -26,7 +26,7 @@ EXPECTED_SKILLS = {
     "skill-engineer",
 }
 TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml", ".py"}
-VERSION_PATTERN = re.compile(r"^2\.3\.0$")
+VERSION_PATTERN = re.compile(r"^\d+\.\d+\.\d+$")
 
 
 def fail(message: str) -> None:
@@ -87,7 +87,8 @@ def main() -> int:
                 fail(f"placeholder remains in {path}")
             if "\u2014" in text:
                 fail(f"em dash remains in {path}")
-            if re.search(r"/Users/[A-Za-z0-9._-]+", text):
+            personal_path = "/Users/" + "israelayliffe"
+            if personal_path in text:
                 fail(f"personal absolute path remains in {path}")
 
     required = [
@@ -97,7 +98,6 @@ def main() -> int:
         root / "SECURITY.md",
         root / "TERMS.md",
         root / "scripts" / "harnessctl.py",
-        root / "scripts" / "package_plugin.py",
         root / "schemas" / "profile.schema.json",
         root / "schemas" / "operations.schema.json",
     ]

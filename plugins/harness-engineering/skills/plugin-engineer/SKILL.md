@@ -1,6 +1,6 @@
 ---
 name: plugin-engineer
-description: Create, update, validate, install, or package a plugin required by an approved harness architecture, for Claude Code, Claude Cowork, or Codex. Use when several related skills need a public or team bundle, when the harness needs plugin metadata or a marketplace entry, when a Claude Cowork plugin must be packaged as a validated ZIP archive, or when an existing local plugin must be updated and reinstalled with source-cache and fresh-discovery proof.
+description: Create, update, validate, install, or package a plugin required by an approved harness architecture, for Claude Code, Claude Cowork, or Codex. Use when several related skills need a public or team bundle, when the harness needs plugin metadata or a marketplace entry, when a Cowork-compatible archive must be packaged and statically verified, or when an existing local plugin must be updated and reinstalled with source-cache and fresh-discovery proof.
 ---
 
 # Plugin Engineer
@@ -18,9 +18,9 @@ The manifest schema is shared; the packaging, install, and proof paths are not. 
 
 ## Platform branches
 
-- Claude Cowork: use `scripts/package_plugin.py build --output <archive>.zip` to create a ZIP with `.claude-plugin/plugin.json` at the archive root. The package script supplies static archive proof only. Install it through the custom-plugin upload in **Cowork** > **Customize** > **Plugins**, or add a marketplace from a GitHub repository or git URL. Do not claim a live installation, discovery result, chat install card, or directory upload unless that exact path has been tested in the current app.
+- Claude Cowork: package the plugin directory as a deterministic archive with `.claude-plugin/plugin.json` at the archive root. Use the current app's custom-plugin upload or a configured marketplace. The package verifier supplies static archive proof only. Do not claim live installation or discovery unless that exact path has been tested in the current app.
 - Claude Code: scaffold or validate with `claude plugin validate`, install with `/plugin` or `claude plugin install` (test via `--plugin-dir`), and compare source against the cache under `~/.claude/plugins/cache/` after marketplace installs.
-- Codex: scaffold with the system `plugin-creator` skill, install through `codex plugin marketplace add` and `codex plugin add`, verify with `codex plugin list --json`, then run `scripts/verify_install.py <plugin-path> --marketplace <marketplace-name>`. The verifier derives the cache root from `CODEX_HOME` or `~/.codex` and accepts `--cache-root` for an explicit isolated cache.
+- Codex: scaffold with the system `plugin-creator` skill, install through `codex plugin marketplace add` and `codex plugin add`, verify with `codex plugin list --json` and `scripts/verify_install.py` source-cache parity.
 
 For task-start policy, keep the personal plugin front door implicit and hide an owned specialist only after a deterministic front-door case proves reachability. Keep explicit-only plugin skills and exact loose mirrors out of default context. Preserve unrelated metadata, roll out in reversible waves, and run an actual explicit hidden-skill smoke. Follow `../../references/frontier-first-prompt-governance.md`.
 

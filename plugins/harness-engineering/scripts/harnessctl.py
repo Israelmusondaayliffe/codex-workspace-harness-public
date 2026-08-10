@@ -19,7 +19,16 @@ from typing import Any, Iterable
 
 SCHEMA_VERSION = 1
 PROFILE_REQUIRED = {"schema_version", "user", "scope", "decisions"}
-PLAN_REQUIRED = {"schema_version", "run_id", "allowed_roots", "approval_groups", "operations"}
+PLAN_REQUIRED = {
+    "schema_version",
+    "run_id",
+    "allowed_roots",
+    "approval_groups",
+    "outcome",
+    "resource_budget",
+    "support_artifacts",
+    "operations",
+}
 SECRET_KEY = re.compile(r"(?i)(token|secret|password|cookie|credential|authorization|api[_-]?key)")
 
 
@@ -121,6 +130,60 @@ def validate_operations(data: Any) -> None:
     groups = data["approval_groups"]
     if not isinstance(groups, list) or len(groups) != len(set(groups)):
         raise HarnessError("approval_groups must be a unique array")
+    outcome = data["outcome"]
+    outcome_fields = {
+        "primary_metric",
+        "before_state",
+        "target_state",
+        "unresolved_before",
+        "unresolved_target",
+        "expected_primary_outputs",
+    }
+    if not isinstance(outcome, dict) or set(outcome) != outcome_fields:
+        raise HarnessError("outcome must contain the exact work-first fields")
+    for field in ("primary_metric", "before_state", "target_state"):
+        if not isinstance(outcome[field], str) or not outcome[field].strip():
+            raise HarnessError(f"outcome.{field} must be a non-empty string")
+    for field in ("unresolved_before", "unresolved_target"):
+        if not isinstance(outcome[field], int) or isinstance(outcome[field], bool) or outcome[field] < 0:
+            raise HarnessError(f"outcome.{field} must be a non-negative integer")
+    if outcome["unresolved_target"] > outcome["unresolved_before"]:
+        raise HarnessError("outcome.unresolved_target cannot exceed unresolved_before")
+    if not isinstance(outcome["expected_primary_outputs"], int) or isinstance(outcome["expected_primary_outputs"], bool) or outcome["expected_primary_outputs"] < 1:
+        raise HarnessError("outcome.expected_primary_outputs must be a positive integer")
+    budget = data["resource_budget"]
+    budget_fields = {
+        "max_task_launches",
+        "max_support_artifacts",
+        "max_verification_passes",
+        "max_low_yield_waves",
+        "high_cost_approved",
+        "cost_warning",
+    }
+    if not isinstance(budget, dict) or set(budget) != budget_fields:
+        raise HarnessError("resource_budget must contain the exact work-first fields")
+    launches = budget["max_task_launches"]
+    if not isinstance(launches, int) or isinstance(launches, bool) or not 0 <= launches <= 24:
+        raise HarnessError("resource_budget.max_task_launches must be from 0 to 24")
+    support_limit = budget["max_support_artifacts"]
+    if not isinstance(support_limit, int) or isinstance(support_limit, bool) or not 0 <= support_limit <= 12:
+        raise HarnessError("resource_budget.max_support_artifacts must be from 0 to 12")
+    if budget["max_verification_passes"] != 1 or budget["max_low_yield_waves"] != 1:
+        raise HarnessError("resource_budget permits one final verification pass and one low-yield wave")
+    if launches > 6:
+        if budget["high_cost_approved"] is not True:
+            raise HarnessError("a launch cap above 6 requires high_cost_approved=true")
+        if not isinstance(budget["cost_warning"], str) or not budget["cost_warning"].strip():
+            raise HarnessError("a launch cap above 6 requires a cost warning")
+    elif budget["high_cost_approved"] is not False or budget["cost_warning"] is not None:
+        raise HarnessError("ordinary launch caps use high_cost_approved=false and cost_warning=null")
+    support_artifacts = data["support_artifacts"]
+    if not isinstance(support_artifacts, list) or any(not isinstance(item, str) or not item.strip() for item in support_artifacts):
+        raise HarnessError("support_artifacts must be a list of non-empty paths")
+    if len(support_artifacts) != len(set(support_artifacts)):
+        raise HarnessError("support_artifacts must not contain duplicates")
+    if len(support_artifacts) > support_limit:
+        raise HarnessError("support_artifacts exceeds resource_budget.max_support_artifacts")
     ids: set[str] = set()
     for operation in data["operations"]:
         if not isinstance(operation, dict):
@@ -221,6 +284,8 @@ def apply_plan(
         "run_id": plan["run_id"],
         "mode": mode,
         "approved_groups": sorted(approved),
+        "outcome": plan["outcome"],
+        "resource_budget": plan["resource_budget"],
         "results": results,
     }
     write_json(receipt_path, receipt)
@@ -309,12 +374,49 @@ def codex_plugin_inventory() -> list[dict[str, Any]]:
     )
 
 
+def installed_plugin_inventory(home: Path) -> list[dict[str, Any]]:
+    """List installed plugins from Claude Code's installed_plugins.json registry (schema version 2)."""
+    registry = home / "plugins" / "installed_plugins.json"
+    if not registry.is_file():
+        return []
+    try:
+        payload = json.loads(registry.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    plugins: list[dict[str, Any]] = []
+    for key, installs in (payload.get("plugins") or {}).items():
+        if not isinstance(installs, list) or not installs:
+            continue
+        name, _, marketplace = str(key).partition("@")
+        for install in installs:
+            if not isinstance(install, dict):
+                continue
+            plugins.append(
+                {
+                    "name": name,
+                    "marketplace": marketplace or None,
+                    "version": install.get("version"),
+                    "scope": install.get("scope"),
+                    "path": install.get("installPath"),
+                }
+            )
+    return sorted(plugins, key=lambda item: (str(item["name"]), str(item["version"])))
+
+
 def directory_plugin_inventory(root: Path) -> list[dict[str, Any]]:
-    """List plugins by reading manifests under a plugin directory (Claude Code cache or Cowork synced dir)."""
+    """List plugins by reading manifests under a plugin directory (Claude Code cache or Cowork synced dir).
+
+    Covers both layouts: flat (<root>/<plugin>/) and the Claude Code cache
+    nesting (<root>/<marketplace>/<plugin>/<version>/).
+    """
     plugins: list[dict[str, Any]] = []
     if not root.is_dir():
         return plugins
-    for manifest in sorted(root.glob("*/.claude-plugin/plugin.json")) + sorted(root.glob("*/.codex-plugin/plugin.json")):
+    manifests = []
+    for kind in (".claude-plugin", ".codex-plugin"):
+        manifests += sorted(root.glob(f"*/{kind}/plugin.json"))
+        manifests += sorted(root.glob(f"*/*/*/{kind}/plugin.json"))
+    for manifest in manifests:
         try:
             data = json.loads(manifest.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -386,7 +488,11 @@ def audit_environment(target: str, home_path: Path, workspace: Path | None) -> d
         plugins: list[dict[str, Any]] = codex_plugin_inventory()
     else:
         config = json_key_names(home / "settings.json")
-        plugins = directory_plugin_inventory(home / "plugins" / "cache") or directory_plugin_inventory(home / "plugins" / "synced")
+        plugins = (
+            installed_plugin_inventory(home)
+            or directory_plugin_inventory(home / "plugins" / "cache")
+            or directory_plugin_inventory(home / "plugins" / "synced")
+        )
 
     report: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
