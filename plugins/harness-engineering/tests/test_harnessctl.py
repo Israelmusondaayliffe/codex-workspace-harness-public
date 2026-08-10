@@ -40,7 +40,7 @@ class HarnessCtlTests(unittest.TestCase):
                     {
                         "version": 2,
                         "plugins": {
-                            "agent-ops@israel-plugins": [
+                            "agent-ops@community-agent-plugins": [
                                 {"scope": "user", "installPath": "/x/agent-ops/0.5.0", "version": "0.5.0"}
                             ]
                         },
@@ -51,10 +51,10 @@ class HarnessCtlTests(unittest.TestCase):
             installed = harnessctl.installed_plugin_inventory(home)
             self.assertEqual(
                 [(item["name"], item["marketplace"], item["version"]) for item in installed],
-                [("agent-ops", "israel-plugins", "0.5.0")],
+                [("agent-ops", "community-agent-plugins", "0.5.0")],
             )
 
-            nested = home / "plugins" / "cache" / "israel-plugins" / "agent-ops" / "0.5.0" / ".claude-plugin"
+            nested = home / "plugins" / "cache" / "community-agent-plugins" / "agent-ops" / "0.5.0" / ".claude-plugin"
             nested.mkdir(parents=True)
             (nested / "plugin.json").write_text(json.dumps({"name": "agent-ops", "version": "0.5.0"}), encoding="utf-8")
             scanned = harnessctl.directory_plugin_inventory(home / "plugins" / "cache")

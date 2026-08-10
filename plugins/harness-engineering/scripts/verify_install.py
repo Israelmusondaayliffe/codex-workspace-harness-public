@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify a Codex plugin installation and source-cache parity."""
+"""Verify a plugin installation and source-cache parity on Claude Code or Codex."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 from typing import Any, Optional
@@ -29,6 +30,47 @@ def file_map(root: Path) -> dict[str, str]:
 def default_cache_root() -> Path:
     codex_home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))).expanduser()
     return codex_home / "plugins" / "cache"
+
+
+def claude_home() -> Path:
+    return Path(os.environ.get("CLAUDE_CONFIG_DIR", str(Path.home() / ".claude"))).expanduser()
+
+
+def claude_cache_root(home: Optional[Path] = None) -> Path:
+    return (home or claude_home()) / "plugins" / "cache"
+
+
+def claude_listing(home: Optional[Path] = None) -> dict[str, Any]:
+    """Build a Codex-shaped installation listing from Claude Code's registry.
+
+    Reads installed_plugins.json (schema version 2) plus the enabledPlugins map
+    in settings.json, so the same select_installation logic serves both hosts.
+    """
+    base = home or claude_home()
+    registry_path = base / "plugins" / "installed_plugins.json"
+    if not registry_path.is_file():
+        raise RuntimeError(f"Claude Code plugin registry not found: {registry_path}")
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    enabled_map: dict[str, Any] = {}
+    settings_path = base / "settings.json"
+    if settings_path.is_file():
+        try:
+            enabled_map = json.loads(settings_path.read_text(encoding="utf-8")).get("enabledPlugins", {})
+        except (OSError, json.JSONDecodeError):
+            enabled_map = {}
+    installed = []
+    for key, installs in (registry.get("plugins") or {}).items():
+        name, _, marketplace = str(key).partition("@")
+        for install in installs if isinstance(installs, list) else []:
+            installed.append(
+                {
+                    "name": name,
+                    "marketplaceName": marketplace or None,
+                    "version": install.get("version"),
+                    "enabled": bool(enabled_map.get(key, True)),
+                }
+            )
+    return {"installed": installed}
 
 
 def select_installation(
@@ -100,17 +142,36 @@ def main() -> int:
         help="Plugin source directory",
     )
     parser.add_argument(
+        "--platform",
+        choices=("auto", "claude", "codex"),
+        default="auto",
+        help="Host to verify against; auto preserves the legacy Codex flow when the codex CLI "
+        "is available and falls back to Claude Code's plugin registry otherwise",
+    )
+    parser.add_argument(
         "--marketplace",
-        help="Marketplace name from `codex plugin list --json`; required when matching installs are ambiguous",
+        help="Marketplace name; required when matching installs are ambiguous",
     )
     parser.add_argument(
         "--cache-root",
         type=Path,
-        help="Base Codex plugin cache directory; defaults to $CODEX_HOME/plugins/cache or ~/.codex/plugins/cache",
+        help="Base plugin cache directory; defaults to the resolved host's cache "
+        "($CLAUDE_CONFIG_DIR or ~/.claude on Claude Code, $CODEX_HOME or ~/.codex on Codex)",
     )
     args = parser.parse_args()
-    listing = subprocess.run(["codex", "plugin", "list", "--json"], check=True, capture_output=True, text=True)
-    result = verify_install(args.source, json.loads(listing.stdout), args.marketplace, args.cache_root)
+    platform = args.platform
+    if platform == "auto":
+        # Behavior-preserving: machines where the legacy Codex flow worked keep it.
+        platform = "codex" if shutil.which("codex") else "claude"
+    if platform == "claude":
+        listing_data = claude_listing()
+        cache_root = args.cache_root or claude_cache_root()
+    else:
+        listing = subprocess.run(["codex", "plugin", "list", "--json"], check=True, capture_output=True, text=True)
+        listing_data = json.loads(listing.stdout)
+        cache_root = args.cache_root
+    result = verify_install(args.source, listing_data, args.marketplace, cache_root)
+    result["platform"] = platform
     print(json.dumps(result, indent=2))
     return 0
 

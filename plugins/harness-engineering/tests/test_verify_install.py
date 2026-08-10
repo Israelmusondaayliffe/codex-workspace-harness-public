@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -62,6 +63,36 @@ class VerifyInstallTests(unittest.TestCase):
             source, cache_root = self.make_source_and_cache(Path(temp), marketplace="public-source")
             result = verify_install.verify_install(source, self.listing("public-source"), cache_root=cache_root)
             self.assertEqual(result["marketplace"], "public-source")
+
+    def test_claude_listing_reads_registry_and_enabled_map(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            home = Path(temp)
+            (home / "plugins").mkdir(parents=True)
+            (home / "plugins" / "installed_plugins.json").write_text(
+                json.dumps(
+                    {
+                        "version": 2,
+                        "plugins": {
+                            "harness-engineering@public-source": [
+                                {"scope": "user", "installPath": "/x", "version": "2.5.1"}
+                            ],
+                            "other@public-source": [
+                                {"scope": "user", "installPath": "/y", "version": "1.0.0"}
+                            ],
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (home / "settings.json").write_text(
+                json.dumps({"enabledPlugins": {"harness-engineering@public-source": True, "other@public-source": False}}),
+                encoding="utf-8",
+            )
+            listing = verify_install.claude_listing(home)
+            rows = {(item["name"], item["marketplaceName"], item["version"], item["enabled"]) for item in listing["installed"]}
+            self.assertIn(("harness-engineering", "public-source", "2.5.1", True), rows)
+            self.assertIn(("other", "public-source", "1.0.0", False), rows)
+            self.assertEqual(verify_install.claude_cache_root(home), home / "plugins" / "cache")
 
     def test_ambiguous_marketplaces_require_selection(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
