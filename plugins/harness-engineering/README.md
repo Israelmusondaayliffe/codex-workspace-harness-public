@@ -28,12 +28,12 @@ Claude Cowork: build a portable ZIP, then select it through the custom-plugin up
 python3 scripts/package_plugin.py build --output dist/harness-engineering.zip
 ```
 
-The command performs static source-to-archive validation. `dist/` is intentionally ignored, so the ZIP is not tracked or released by this repository. Anthropic also documents [custom plugin uploads](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) and [repository-backed marketplaces](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization). Neither a live Cowork install nor fresh-task discovery is asserted here.
+The command performs static source-to-archive validation. `dist/` is intentionally ignored, so the ZIP is not tracked or released by this repository. Neither a live Cowork install nor fresh-task discovery is asserted here.
 
 Claude Code:
 
 ```bash
-claude plugin marketplace add Israelmusondaayliffe/harness-engineering-public
+claude plugin marketplace add Israelmusondaayliffe/plugins
 claude plugin install harness-engineering@community-agent-plugins
 ```
 
@@ -42,7 +42,7 @@ or test a local checkout with `claude --plugin-dir ./plugins/harness-engineering
 Codex:
 
 ```bash
-codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin marketplace add Israelmusondaayliffe/plugins --ref main
 codex plugin add harness-engineering@community-agent-plugins
 ```
 
