@@ -9,7 +9,7 @@ The included Harness Engineering plugin can interview you, audit an existing set
 On Claude Code:
 
 ```bash
-claude plugin marketplace add Israelmusondaayliffe/harness-engineering-public
+claude plugin marketplace add Israelmusondaayliffe/plugins
 claude plugin install harness-engineering@community-agent-plugins
 ```
 
@@ -32,7 +32,7 @@ On Codex, copy this block:
 Install the Harness Engineering plugin from the public repository.
 
 Run:
-codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin marketplace add Israelmusondaayliffe/plugins --ref main
 codex plugin add harness-engineering@community-agent-plugins
 
 Then confirm that Harness Engineering is enabled and that its 13 skills are installed and available. A generic task may expose only the front door and the relevant implicit skills, rather than all 13 at once. To choose a specialist explicitly, invoke its full namespaced skill, such as `$harness-engineering:harness-interview` or `$harness-engineering:harness-verifier`. After installation, use Harness Engineering to interview me, audit my current setup, propose a plan, and stop for review before changing files.
@@ -41,7 +41,7 @@ Then confirm that Harness Engineering is enabled and that its 13 skills are inst
 Or run the installation commands directly:
 
 ```bash
-codex plugin marketplace add Israelmusondaayliffe/harness-engineering-public --ref main
+codex plugin marketplace add Israelmusondaayliffe/plugins --ref main
 codex plugin add harness-engineering@community-agent-plugins
 ```
 
